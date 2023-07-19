@@ -1,4 +1,9 @@
 pluginManagement {
+
+    plugins {
+        id Plugins.KOTLIN_ANDROID version Version.KOTLIN_PLUGIN
+    }
+
     repositories {
         google()
         mavenCentral()
