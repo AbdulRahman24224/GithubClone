@@ -97,5 +97,7 @@ dependencies {
 
     implementation(project(Modules.DATASOURCES))
     implementation(project(Modules.NETWORK))
+    implementation(project(Modules.REPOSITORIES))
+    implementation(project(Modules.REPOSITORIES_IMPL))
 
 }
