@@ -21,3 +21,4 @@ rootProject.name = "GithubClone"
 include ':app'
 include ':datasources'
 include ':domain_models'
+include ':network'

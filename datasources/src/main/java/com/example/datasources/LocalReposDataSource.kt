@@ -1,7 +1,7 @@
 package com.example.datasources
 
 
-import com.example.domain_models.products.Repo
+import com.example.domain_models.repos.Repo
 import kotlinx.coroutines.flow.Flow
 
 interface LocalReposDataSource {

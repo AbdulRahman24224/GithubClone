@@ -1,4 +1,4 @@
-package com.example.domain_models.products
+package com.example.domain_models.repos
 
 data class Owner(
     val login: String?=null,
