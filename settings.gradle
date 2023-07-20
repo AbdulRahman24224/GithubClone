@@ -1,7 +1,7 @@
 pluginManagement {
 
     plugins {
-        id Plugins.KOTLIN_ANDROID version Version.KOTLIN_PLUGIN
+        id 'org.jetbrains.kotlin.android' version '1.7.0'
     }
 
     repositories {
@@ -19,3 +19,5 @@ dependencyResolutionManagement {
 }
 rootProject.name = "GithubClone"
 include ':app'
+include ':datasources'
+include ':domain_models'
