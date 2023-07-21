@@ -94,12 +94,12 @@ dependencies {
     implementation(Lib.NAVIGATION_FRAGMENT_KTX)
 
     implementation(project(Modules.DOMAIN_MODELS))
-
     implementation(project(Modules.DATASOURCES))
     implementation(project(Modules.NETWORK))
     implementation(project(Modules.REPOSITORIES))
     implementation(project(Modules.REPOSITORIES_IMPL))
     implementation(project(Modules.USECASES))
     implementation(project(Modules.USECASES_IMPL))
+    implementation(project(Modules.STORAGE))
 
 }

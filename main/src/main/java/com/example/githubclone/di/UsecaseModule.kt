@@ -13,7 +13,7 @@ import dagger.hilt.components.SingletonComponent
 interface UseCaseModule {
 
     @Binds
-    fun bindGetProductsUseCase(
+    fun bindGetReposUseCase(
         useCase: GetReposByStarsUseCaseImpl,
     ): GetReposByStarsUseCase
 

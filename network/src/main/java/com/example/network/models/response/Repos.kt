@@ -15,6 +15,7 @@ data class RepoJson(
     val description: String?=null,
     val language: String?=null,
     val stars: Int?=null,
+    val id: Long?=null,
 )
 
 data class ReposResponse(

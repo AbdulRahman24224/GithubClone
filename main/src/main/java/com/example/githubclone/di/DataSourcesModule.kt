@@ -12,7 +12,7 @@ import dagger.hilt.components.SingletonComponent
 interface DataSourcesModule {
 
     @Binds
-    fun bindRemoteProductDataSource(
+    fun bindRemoteReposDataSource(
         userDataSourceImpl: RemoteReposDataSourceImpl
     ): RemoteReposDataSource
 

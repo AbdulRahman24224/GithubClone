@@ -14,7 +14,7 @@ import dagger.hilt.components.SingletonComponent
 interface RepositoryModule {
 
     @Binds
-    fun bindSignUpRepository(
+    fun bindReposRepository(
         repositoryImpl: ReposRepositoryImpl
     ): ReposRepository
 
