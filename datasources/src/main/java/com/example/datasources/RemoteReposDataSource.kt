@@ -6,7 +6,7 @@ import com.example.domain_models.repos.Repo
 
 interface RemoteReposDataSource {
 
-    suspend fun getReposByRating(): DataResult<List<Repo>>
+    suspend fun getReposByStars(): DataResult<List<Repo>>
 
 
 }

@@ -14,7 +14,7 @@ class RemoteReposDataSourceImpl @Inject constructor(
 
     ) : RemoteReposDataSource {
 
-    override suspend fun getReposByRating(): DataResult<List<Repo>> {
+    override suspend fun getReposByStars(): DataResult<List<Repo>> {
         return try {
             reposService.getReposByRating().let {
                 when (it) {

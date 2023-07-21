@@ -7,12 +7,12 @@ import com.example.repositories.ReposRepository
 import javax.inject.Inject
 
 class ReposRepositoryImpl @Inject constructor(
-    private val remoteProductsDataSource: RemoteReposDataSource,
+    private val remoteReposDataSource: RemoteReposDataSource,
 ) : ReposRepository {
 
 
-    override suspend fun getRemoteProducts(): DataResult<List<Repo>> {
-        return remoteProductsDataSource.getReposByRating()
+    override suspend fun getReposByStars(): DataResult<List<Repo>> {
+        return remoteReposDataSource.getReposByStars()
     }
 
 

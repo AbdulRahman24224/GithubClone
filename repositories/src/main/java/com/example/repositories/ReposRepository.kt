@@ -5,6 +5,6 @@ import com.example.domain_models.repos.Repo
 
 interface ReposRepository {
 
-    suspend fun getRemoteProducts(): DataResult<List<Repo>>
+    suspend fun getReposByStars(): DataResult<List<Repo>>
 
 }

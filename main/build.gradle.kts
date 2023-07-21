@@ -99,5 +99,7 @@ dependencies {
     implementation(project(Modules.NETWORK))
     implementation(project(Modules.REPOSITORIES))
     implementation(project(Modules.REPOSITORIES_IMPL))
+    implementation(project(Modules.USECASES))
+    implementation(project(Modules.USECASES_IMPL))
 
 }
