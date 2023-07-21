@@ -1,7 +1,9 @@
 package com.example.githubclone.di
 
-import com.example.usecases.products.GetReposByStarsUseCase
-import com.example.usecases_impl.GetReposByStarsUseCaseImpl
+import com.example.usecases.products.GetLocaleReposByStarsUseCase
+import com.example.usecases.products.GetRemoteReposByStarsUseCase
+import com.example.usecases_impl.GetLocaleReposByStarsUseCaseImpl
+import com.example.usecases_impl.GetRemoteReposByStarsUseCaseImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -13,8 +15,14 @@ import dagger.hilt.components.SingletonComponent
 interface UseCaseModule {
 
     @Binds
-    fun bindGetReposUseCase(
-        useCase: GetReposByStarsUseCaseImpl,
-    ): GetReposByStarsUseCase
+    fun bindGetRemoteReposUseCase(
+        useCase: GetRemoteReposByStarsUseCaseImpl,
+    ): GetRemoteReposByStarsUseCase
+
+
+    @Binds
+    fun bindGetLocaleReposUseCase(
+        useCase: GetLocaleReposByStarsUseCaseImpl,
+    ): GetLocaleReposByStarsUseCase
 
 }

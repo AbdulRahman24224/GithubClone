@@ -8,6 +8,6 @@ interface LocalReposDataSource {
 
     suspend fun insertRepos(repos: List<Repo>)
 
-    suspend fun getAllRepos(): Flow<List<Repo>>
+    suspend fun getAllRepos():List<Repo>
 
 }

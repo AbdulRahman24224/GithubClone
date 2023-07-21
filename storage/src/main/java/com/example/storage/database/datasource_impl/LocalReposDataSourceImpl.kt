@@ -18,11 +18,8 @@ class LocalReposDataSourceImpl @Inject constructor(
         reposDao.insertProducts(repos.map { it.toEntity() })
     }
 
-    override suspend fun getAllRepos(): Flow<List<Repo>> {
-        return reposDao.getAllProducts().map { list ->
-            list.map { it.toDomain() }
+    override  suspend fun getAllRepos(): List<Repo> {
+        return reposDao.getAllProducts().map { it ->it.toDomain() }
         }
-    }
-
 
 }

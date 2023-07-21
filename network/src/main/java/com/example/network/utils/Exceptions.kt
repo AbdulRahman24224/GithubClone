@@ -2,10 +2,10 @@ package com.example.network.utils
 
 
 import org.json.JSONObject
-import java.io.*
 
 
-internal fun String.toException(): Throwable {
+
+ fun String.toException(): Throwable {
     try {
         var (errorCode, error, details) = Triple("", "", "")
 

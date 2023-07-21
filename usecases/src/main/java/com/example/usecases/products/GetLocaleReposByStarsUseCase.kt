@@ -3,7 +3,7 @@ package com.example.usecases.products
 import com.example.domain_models.network.DataResult
 import com.example.domain_models.repos.Repo
 
-interface GetReposByStarsUseCase {
+interface GetLocaleReposByStarsUseCase {
 
-    suspend operator fun invoke(): DataResult<List<Repo>>
+    suspend operator  fun invoke(): List<Repo>
 }

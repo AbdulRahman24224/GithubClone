@@ -1,12 +1,15 @@
 package com.example.network.datasource_impl
 
+import android.accounts.NetworkErrorException
 import com.example.datasources.RemoteReposDataSource
 import com.example.domain_models.network.DataResult
+import com.example.domain_models.network.NetworkException
 import com.example.domain_models.repos.Repo
 import com.example.network.mapper.toDomain
 import com.example.network.models.NetworkResponse
 import com.example.network.service.ReposService
 import com.example.network.utils.toException
+import java.net.UnknownHostException
 import javax.inject.Inject
 
 class RemoteReposDataSourceImpl @Inject constructor(
@@ -23,7 +26,7 @@ class RemoteReposDataSourceImpl @Inject constructor(
                     }
 
                     is NetworkResponse.NetworkError -> {
-                        DataResult.Failure(RuntimeException(it.error.localizedMessage))
+                        DataResult.Failure(NetworkException(it?.error?.localizedMessage ?:""))
                     }
 
                     is NetworkResponse.Success -> {
@@ -31,7 +34,7 @@ class RemoteReposDataSourceImpl @Inject constructor(
                     }
 
                     is NetworkResponse.UnknownError -> {
-                        DataResult.Failure(RuntimeException(it.error.localizedMessage))
+                        DataResult.Failure(NetworkException(it?.error?.localizedMessage ?:""))
                     }
                 }
             }

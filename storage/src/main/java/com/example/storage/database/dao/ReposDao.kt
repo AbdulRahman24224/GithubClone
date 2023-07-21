@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.Flow
      fun insertProducts(products: List<RepoEntity>)
 
     @Query("SELECT * from RepoEntity")
-     fun getAllProducts(): Flow<List<RepoEntity>>
+     fun getAllProducts(): List<RepoEntity>
 
 
 
