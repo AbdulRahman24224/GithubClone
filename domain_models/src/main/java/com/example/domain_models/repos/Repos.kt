@@ -1,7 +1,7 @@
 package com.example.domain_models.repos
 
 
-data class Repo(
+ data class Repo(
     val id: Long?=null,
     val name: String?=null,
     val description: String?=null,

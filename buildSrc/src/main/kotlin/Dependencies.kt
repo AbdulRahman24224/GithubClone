@@ -12,7 +12,7 @@ object Version {
     const val KOTLIN_PLUGIN = "1.7.0"
     const val GRADLE_PLUGIN = "8.0.0"
 
-    const val COROUTINES = "1.6.0"
+    const val COROUTINES = "1.7.0"
     const val ANDROIDX = "1.3.0"
     const val BIOMETRIC = "1.1.0"
     const val ANDROIDX_ANNOTATION = "1.2.0"
@@ -160,12 +160,16 @@ object Lib {
 
     //Testing
     const val TRUTH = "com.google.truth:truth:1.0"
-    const val JUNIT = "junit:junit:4.13.1"
-    const val TEST_CORE = "androidx.test:core:1.3.0"
+    const val ANDROID_CORE_TESTING = "androidx.arch.core:core-testing:2.2.0"
+    const val COROUTINES_TEST = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Version.COROUTINES}"
+    const val MOCKK = "io.mockk:mockk:1.13.5"
+    const val JUNIT = "junit:junit:4.13.2"
+    const val ANDROID_TEST_CORE = "androidx.test:core:1.3.0"
+    const val ANDROID_TEST_EXT = "androidx.test.ext:junit:1.5.2"
     const val MOCKITO_CORE = "org.mockito:mockito-core:2.21.0"
     const val MOCKITO_INLINE = "org.mockito:mockito-inline:2.13.0"
     const val COMPOSE_UI_TEST_JUNIT4 = "androidx.compose.ui:ui-test-junit4:${Version.COMPOSE}"
-
+    const val TURBINE = "app.cash.turbine:turbine:1.0.0"
 
 
 }

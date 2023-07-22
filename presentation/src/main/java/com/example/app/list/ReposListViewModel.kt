@@ -1,6 +1,7 @@
 package com.example.app.list
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.domain_models.network.DataResult
 import com.example.domain_models.network.NetworkException
 import com.example.domain_models.repos.Repo
@@ -8,9 +9,12 @@ import com.example.usecases.products.GetLocaleReposByStarsUseCase
 import com.example.usecases.products.GetRemoteReposByStarsUseCase
 import com.example.usecases.products.SaveReposLocallyUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -22,7 +26,6 @@ class ReposListViewModel @Inject constructor(
     private val getRemoteReposByStarsUseCase: GetRemoteReposByStarsUseCase,
     private val getLocaleReposByStarsUseCase: GetLocaleReposByStarsUseCase,
     private val saveReposLocallyUseCase: SaveReposLocallyUseCase,
-    private val coroutineScope: CoroutineScope
 
 ) : ViewModel (){
 
@@ -44,7 +47,7 @@ class ReposListViewModel @Inject constructor(
 
     private fun getLocaleRepos(){
 
-        coroutineScope.launch {
+        viewModelScope.launch {
 
         val localRepos =   withContext(Dispatchers.IO) { getLocaleReposByStarsUseCase(_viewState.value.page) }
 
@@ -61,7 +64,7 @@ class ReposListViewModel @Inject constructor(
 
     private fun getRemoteRepos() {
 
-        coroutineScope.launch {
+        viewModelScope.launch {
 
             val result = withContext(Dispatchers.IO) {
                 getRemoteReposByStarsUseCase(_viewState.value.page)
@@ -83,6 +86,7 @@ class ReposListViewModel @Inject constructor(
 
                 is DataResult.Failure -> {
 
+                    _viewState.update { it.copy(snackBarMessage = result.throwable.localizedMessage) }
                     when (result.throwable) {
                         is NetworkException -> {/* Todo :  show error or load from Locale*/}
                         else -> {/*  Todo:  Api error show toast */ }
@@ -93,11 +97,15 @@ class ReposListViewModel @Inject constructor(
 
     }
 
-    private suspend fun addPageToList(localRepos: List<Repo>) {
-        _reposList.emit(_reposList.value + localRepos)
-        _viewState.update {
-            it.copy(isLoading = false, page = it.page.plus(1))
+    private  fun addPageToList(localRepos: List<Repo>) {
+
+        viewModelScope.launch {
+            _reposList.emit(_reposList.value + localRepos)
+            _viewState.update {
+                it.copy(isLoading = false, page = it.page.plus(1))
+            }
         }
+
     }
 
 }

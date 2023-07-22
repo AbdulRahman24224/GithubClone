@@ -81,10 +81,20 @@ dependencies {
     //DI
     implementation(Lib.HILT_ANDROID)
     implementation(Lib.HILT_WORK)
-    kapt(Lib.HILT_WORK_KAPT)
 
+
+    kapt(Lib.HILT_WORK_KAPT)
     kapt(Lib.HILT_ANDROID_COMPILER)
     kapt(Lib.ROOM_COMPILER)
+
+    // Testing
+    testImplementation (Lib.ANDROID_CORE_TESTING)
+    testImplementation (Lib.COROUTINES_TEST)
+    testImplementation (Lib.MOCKK)
+    testImplementation (Lib.JUNIT)
+    testImplementation (Lib.TURBINE)
+    androidTestImplementation (Lib.ANDROID_TEST_EXT)
+
 
     implementation(project(Modules.DOMAIN_MODELS))
     implementation(project(Modules.USECASES))
