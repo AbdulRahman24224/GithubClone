@@ -7,7 +7,7 @@ plugins {
 
 android {
 
-    namespace = "com.example.shoppingapp"
+    namespace = "com.example.githubclone"
     compileSdk = Config.COMPILE_SDK
 
     defaultConfig {

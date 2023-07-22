@@ -12,10 +12,10 @@ import kotlinx.coroutines.flow.Flow
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-     fun insertProducts(products: List<RepoEntity>)
+      fun insertProducts(repos: List<RepoEntity>)
 
-    @Query("SELECT * from RepoEntity")
-     fun getAllProducts(): List<RepoEntity>
+    @Query("SELECT * from RepoEntity WHERE page = :page")
+      fun getReposByPage(page :Int): List<RepoEntity>
 
 
 

@@ -7,12 +7,13 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "RepoEntity" )
 data class RepoEntity(
     @PrimaryKey
-    val id: Long?=null,
-    val name: String?=null,
-    val description: String?=null,
-    val language: String?=null,
-    val stars: Int?=null,
-    val ownerName:String?=null,
-    val ownerAvatarUrl:String?=null,
+    var id: Long?=null,
+    var name: String?=null,
+    var description: String?=null,
+    var language: String?=null,
+    var stars: Int?=null,
+    var ownerName:String?=null,
+    var ownerAvatarUrl:String?=null,
+    var page :Int?=null
 
 )

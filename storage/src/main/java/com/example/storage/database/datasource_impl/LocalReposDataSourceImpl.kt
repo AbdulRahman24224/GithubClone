@@ -14,12 +14,12 @@ class LocalReposDataSourceImpl @Inject constructor(
 ) : LocalReposDataSource {
 
 
-    override suspend fun insertRepos(repos: List<Repo>) {
-        reposDao.insertProducts(repos.map { it.toEntity() })
+    override suspend fun insertRepos(repos: List<Repo> , page: Int) {
+        reposDao.insertProducts(repos.map { it.toEntity().copy(page = page) })
     }
 
-    override  suspend fun getAllRepos(): List<Repo> {
-        return reposDao.getAllProducts().map { it ->it.toDomain() }
-        }
+    override   fun getLocalRepos(page:Int): List<Repo> {
+        return reposDao.getReposByPage(page).map { it.toDomain() }
+    }
 
 }

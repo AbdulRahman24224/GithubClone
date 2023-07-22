@@ -5,17 +5,18 @@ import com.example.domain_models.repos.Repo
 import com.example.repositories.ReposRepository
 import com.example.usecases.products.GetLocaleReposByStarsUseCase
 import com.example.usecases.products.GetRemoteReposByStarsUseCase
-import kotlinx.coroutines.flow.Flow
+import com.example.usecases.products.SaveReposLocallyUseCase
 import javax.inject.Inject
 
 
-class GetLocaleReposByStarsUseCaseImpl @Inject constructor(
+class SaveReposLocallyUseCaseImpl @Inject constructor(
     private val reposRepository: ReposRepository ,
-) : GetLocaleReposByStarsUseCase {
+) : SaveReposLocallyUseCase {
 
-    override suspend fun invoke(page:Int): List<Repo>{
-        return reposRepository.getLocaleReposByStars(page )
 
+    override suspend fun invoke(repos: List<Repo>, page: Int) {
+     reposRepository.saveReposLocally(repos,page)
     }
+
 
 }

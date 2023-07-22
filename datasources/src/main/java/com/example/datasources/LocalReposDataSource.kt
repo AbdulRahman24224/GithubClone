@@ -2,12 +2,10 @@ package com.example.datasources
 
 
 import com.example.domain_models.repos.Repo
-import kotlinx.coroutines.flow.Flow
-
 interface LocalReposDataSource {
 
-    suspend fun insertRepos(repos: List<Repo>)
+      suspend fun insertRepos(repos: List<Repo>, page: Int)
 
-    suspend fun getAllRepos():List<Repo>
+      fun getLocalRepos(page:Int):List<Repo>
 
 }
