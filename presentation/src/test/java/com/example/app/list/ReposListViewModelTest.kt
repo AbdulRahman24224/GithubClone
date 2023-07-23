@@ -175,12 +175,31 @@ class ReposListViewModelTest {
     @Test
     fun `getRemoteRepos() with hasLoadedAllData true does not call Remote repos  `() {
 
-        val viewState = ReposListViewState(hasLoadedAllData = true ,hasNoMoreLocaleData = true, page = 1)
+        val viewState =
+            ReposListViewState(hasLoadedAllData = true, hasNoMoreLocaleData = true, page = 1)
         reposListViewModel._viewState.value = viewState
 
         reposListViewModel.loadRepos()
 
         coVerify(exactly = 0) { getRemoteReposByStarsUseCase(1) }
+    }
+
+    @Test
+    fun `getRemoteRepos() with last available page changes hasLoadedAllData to true   `() {
+        runTest {
+
+            coEvery { getRemoteReposByStarsUseCase(34) } returns DataResult.Success(mockSuccessResult)
+            val viewState =
+                ReposListViewState(hasLoadedAllData = false, hasNoMoreLocaleData = true, page = 34)
+            reposListViewModel._viewState.value = viewState
+
+            reposListViewModel.loadRepos()
+
+            coVerify { getRemoteReposByStarsUseCase(34) }
+
+            assertEquals(true, reposListViewModel._viewState.value.hasLoadedAllData)
+
+        }
     }
 
     @Test
@@ -241,7 +260,7 @@ class ReposListViewModelTest {
 
             coVerify(exactly = 0) { clearCachedReposUseCase() }
 
-            assertTrue( reposListViewModel._viewState.value.page !=1)
+            assertTrue(reposListViewModel._viewState.value.page != 1)
             assertTrue(reposListViewModel._viewState.value.hasNoMoreLocaleData.not())
 
         }
