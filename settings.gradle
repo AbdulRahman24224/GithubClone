@@ -3,6 +3,7 @@ pluginManagement {
     plugins {
         id 'org.jetbrains.kotlin.android' version '1.7.0'
         id 'com.android.application' version '8.0.0'
+        id 'com.android.library' version '8.0.0'
     }
 
     repositories {
@@ -29,3 +30,4 @@ include ':repositories_impl'
 include 'usecases'
 include 'usecases_impl'
 include 'storage'
+include ':common'

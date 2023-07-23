@@ -81,11 +81,9 @@ object Lib {
     const val ROOM_COMPILER = "androidx.room:room-compiler:${Version.ROOM}"
     const val SQL_CIPHER = "net.zetetic:android-database-sqlcipher:4.5.3"
     const val SQLITE = "androidx.sqlite:sqlite:2.0.1"
-    const val CRYPTO_TINK = "com.google.crypto.tink:tink-android:1.7.0"
 
-    const val DATASTORE = "androidx.datastore:datastore:1.0.0"
+    const val SECURITY_CRYPTO = "androidx.security:security-crypto:1.1.0-alpha06"
 
-    const val PROTOBUF_JAVALITE = "com.google.protobuf:protobuf-javalite:3.21.2"
     const val VIEWBINDING_PROPERTY_DELEGATE =
         "com.github.kirich1409:viewbindingpropertydelegate:1.4.7"
     const val VIEWBINDING_PROPERTY_DELEGATE_NO_REFLECTION =

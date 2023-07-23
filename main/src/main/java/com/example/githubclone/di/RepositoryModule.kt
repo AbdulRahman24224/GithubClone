@@ -2,7 +2,9 @@ package com.example.githubclone.di
 
 
 import com.example.repositories.ReposRepository
+import com.example.repositories.SettingsRepository
 import com.example.repositories_impl.ReposRepositoryImpl
+import com.example.repositories_impl.SettingsRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -17,5 +19,10 @@ interface RepositoryModule {
     fun bindReposRepository(
         repositoryImpl: ReposRepositoryImpl
     ): ReposRepository
+
+    @Binds
+    fun bindSettingsRepository(
+        repositoryImpl: SettingsRepositoryImpl
+    ): SettingsRepository
 
 }
