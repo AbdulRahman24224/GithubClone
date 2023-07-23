@@ -1,6 +1,8 @@
 plugins {
     id(Plugins.ANDROID_LIBRARY)
     id(Plugins.KOTLIN_ANDROID)
+    id(Plugins.KAPT)
+    id(Plugins.HILT)
 }
 
 android {
@@ -54,6 +56,8 @@ dependencies {
     implementation(Lib.ACCOMPANIST_PLACEHOLDER)
     implementation(Lib.LOTTIE_COMPOSE)
     implementation(Lib.COIL)
+    implementation(Lib.HILT_ANDROID)
+    kapt(Lib.HILT_ANDROID_COMPILER)
 
     implementation(project(Modules.DOMAIN_MODELS))
 }

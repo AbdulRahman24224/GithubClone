@@ -2,7 +2,8 @@ package com.example.app.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.common.utils.DateTimeUtils.currentDate
+import com.example.common.utils.datetime.DateTimeUtils
+import com.example.common.utils.datetime.DateTimeUtilsImpl
 import com.example.domain_models.PREFERENCE_KEYS
 import com.example.domain_models.network.DataResult
 import com.example.domain_models.network.NetworkException
@@ -29,7 +30,8 @@ class ReposListViewModel @Inject constructor(
     private val saveReposLocallyUseCase: SaveReposLocallyUseCase,
     private val getPreferenceValueUseCase: GetPreferenceValueUseCase,
     private val savePreferenceValueUseCase: SavePreferenceValueUseCase,
-    private val clearCachedReposUseCase: ClearCachedReposUseCase
+    private val clearCachedReposUseCase: ClearCachedReposUseCase,
+    private val dateTimeUtils: DateTimeUtils
 
 ) : ViewModel() {
 
@@ -40,7 +42,6 @@ class ReposListViewModel @Inject constructor(
     val viewState = _viewState.asStateFlow()
 
     init {
-
         loadRepos()
     }
 
@@ -56,16 +57,20 @@ class ReposListViewModel @Inject constructor(
 
     }
 
-    private suspend fun checkCacheInvalidation() {
+    fun checkCacheInvalidation() {
 
-        val cacheInvalidationDate =
-            getPreferenceValueUseCase(PREFERENCE_KEYS.CACHE_INVALIDATION_DATE) ?: "0"
+        viewModelScope.launch {
 
-        if (currentDate().time >= cacheInvalidationDate.toLong()) {
+            val cacheInvalidationDate =
+                getPreferenceValueUseCase(PREFERENCE_KEYS.CACHE_INVALIDATION_DATE) ?: "0"
 
-            withContext(Dispatchers.IO) { clearCachedReposUseCase() }
+            if (getCurrentDateInMillis() >= (cacheInvalidationDate.toLongOrNull() ?: 0)) {
 
-            _viewState.update { it.copy(page = 1, hasNoMoreLocaleData = true) }
+                withContext(Dispatchers.IO) { clearCachedReposUseCase() }
+
+                _viewState.update { it.copy(page = 1, hasNoMoreLocaleData = true) }
+            }
+
         }
     }
 
@@ -91,14 +96,18 @@ class ReposListViewModel @Inject constructor(
 
         viewModelScope.launch {
 
-            if (_viewState.value.hasLoadedAllData) return@launch
+            if (_viewState.value.hasLoadedAllData || _viewState.value.isLoading) return@launch
 
             val currentPage = _viewState.value.page
             val nextPage = currentPage.plus(1)
 
+            _viewState.update { it.copy(isLoading = true) }
+
             val result = withContext(Dispatchers.IO) {
                 getRemoteReposByStarsUseCase(currentPage)
             }
+
+            _viewState.update { it.copy(isLoading = false) }
 
             when (result) {
                 is DataResult.Success -> {
@@ -141,11 +150,13 @@ class ReposListViewModel @Inject constructor(
             if (currentPage == 1) {
                 savePreferenceValueUseCase(
                     PREFERENCE_KEYS.CACHE_INVALIDATION_DATE,
-                    (currentDate().time + 120000).toString()
+                    (getCurrentDateInMillis() + TWO_MINUTES_MILLIS).toString()
                 )
             }
         }
     }
+
+    private fun getCurrentDateInMillis() = dateTimeUtils.currentDate().time
 
     private fun addPageToList(localRepos: List<Repo>) {
 
@@ -162,6 +173,7 @@ class ReposListViewModel @Inject constructor(
 
     companion object {
         private const val availablePages = 34
+        private const val TWO_MINUTES_MILLIS = 120000
     }
 
 

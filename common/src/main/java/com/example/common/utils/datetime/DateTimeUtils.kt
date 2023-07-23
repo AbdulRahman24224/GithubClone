@@ -1,11 +1,19 @@
-package com.example.common.utils
+package com.example.common.utils.datetime
 
 import java.util.Calendar
 import java.util.Date
+import javax.inject.Inject
 
-object DateTimeUtils {
 
-    fun currentDate(days: Int = 0): Date {
+interface DateTimeUtils {
+
+    fun currentDate(days: Int = 0): Date
+
+}
+
+class DateTimeUtilsImpl @Inject constructor() : DateTimeUtils {
+
+    override fun currentDate(days: Int): Date {
         return Calendar.getInstance().apply {
             set(
                 Calendar.DAY_OF_MONTH,
