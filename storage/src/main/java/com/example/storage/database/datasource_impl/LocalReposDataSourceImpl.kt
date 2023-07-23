@@ -22,4 +22,6 @@ class LocalReposDataSourceImpl @Inject constructor(
         return reposDao.getReposByPage(page).map { it.toDomain() }
     }
 
+    override suspend fun clearRepos(): Int = reposDao.clearAll()
+
 }

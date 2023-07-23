@@ -2,7 +2,6 @@ package com.example.repositories
 
 import com.example.domain_models.network.DataResult
 import com.example.domain_models.repos.Repo
-import kotlinx.coroutines.flow.Flow
 
 interface ReposRepository {
 
@@ -11,5 +10,10 @@ interface ReposRepository {
      suspend fun getLocaleReposByStars(page:Int): List<Repo>
 
     suspend fun saveReposLocally( repos:List<Repo> , page: Int):Unit
+
+    suspend fun clearRepos():Int
+
+
+
 
 }

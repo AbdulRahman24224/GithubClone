@@ -8,7 +8,7 @@ fun RepoJson.toDomain() = Repo(
     name = name,
     description = description,
     language = language,
-    stars = stars,
+    stars = stargazers_count,
     ownerName = owner?.login,
     ownerAvatarUrl = owner?.avatar_url
 )

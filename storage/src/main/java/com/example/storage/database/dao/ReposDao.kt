@@ -17,6 +17,9 @@ import kotlinx.coroutines.flow.Flow
     @Query("SELECT * from RepoEntity WHERE page = :page")
       fun getReposByPage(page :Int): List<RepoEntity>
 
+    @Query("DELETE FROM RepoEntity ")
+    fun clearAll():Int
+
 
 
 }

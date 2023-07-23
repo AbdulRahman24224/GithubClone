@@ -4,5 +4,6 @@ data class ReposListViewState(
     val isLoading : Boolean  = false,
     val hasNoMoreLocaleData : Boolean  = false,
     val page : Int = 1 ,
-    val snackBarMessage : String? = null
+    val snackBarMessage : String? = null,
+    val hasLoadedAllData : Boolean = false,
 )

@@ -8,4 +8,6 @@ interface LocalReposDataSource {
 
       fun getLocalRepos(page:Int):List<Repo>
 
+      suspend fun clearRepos() :Int
+
 }

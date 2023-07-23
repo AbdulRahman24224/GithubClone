@@ -14,7 +14,7 @@ data class RepoJson(
     val name: String?=null,
     val description: String?=null,
     val language: String?=null,
-    val stars: Int?=null,
+    val stargazers_count: Int?=null,
     val id: Long?=null,
 )
 
