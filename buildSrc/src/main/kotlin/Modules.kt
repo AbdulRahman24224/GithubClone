@@ -1,7 +1,7 @@
 object Modules {
 
-    const val BASE = ":base"
-    const val CORE = ":core"
+    const val COMMON = ":common"
+    const val MAIN = ":main"
     const val PRESENTATION = ":presentation"
     const val RESOURCES = ":resources"
     const val STORAGE = ":storage"

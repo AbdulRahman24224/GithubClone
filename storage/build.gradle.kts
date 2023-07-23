@@ -31,21 +31,18 @@ android {
 dependencies {
 
     implementation(Lib.KOTLIN_STDLIB)
-
+    implementation(Lib.CORE_KTX)
     implementation(Lib.TIMBER)
     implementation(Lib.HILT_ANDROID)
     annotationProcessor(Lib.HILT_ANDROID_COMPILER)
 
     implementation(Lib.ROOM_RUNTIME)
     implementation(Lib.ROOM_KTX)
-    implementation(Lib.SQL_CIPHER)
     implementation(Lib.SQLITE)
     implementation(Lib.GSON)
     kapt(Lib.ROOM_COMPILER)
 
-    implementation(Lib.DATASTORE)
-    implementation(Lib.PROTOBUF_JAVALITE)
-    implementation(Lib.CRYPTO_TINK)
+    implementation(Lib.SECURITY_CRYPTO)
 
     implementation(project(Modules.DATASOURCES))
     implementation(project(Modules.DOMAIN_MODELS))

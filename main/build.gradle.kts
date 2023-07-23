@@ -93,6 +93,7 @@ dependencies {
     implementation(Lib.NAVIGATION_UI_KTX)
     implementation(Lib.NAVIGATION_FRAGMENT_KTX)
 
+    implementation(project(Modules.COMMON))
     implementation(project(Modules.DOMAIN_MODELS))
     implementation(project(Modules.DATASOURCES))
     implementation(project(Modules.NETWORK))

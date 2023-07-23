@@ -95,7 +95,7 @@ dependencies {
     testImplementation (Lib.TURBINE)
     androidTestImplementation (Lib.ANDROID_TEST_EXT)
 
-
+    implementation(project(Modules.COMMON))
     implementation(project(Modules.DOMAIN_MODELS))
     implementation(project(Modules.USECASES))
 }
