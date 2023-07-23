@@ -9,7 +9,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GithubClone">
         <activity
-            android:name=".MainActivity"
+            android:name=".list.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.GithubClone">
@@ -19,6 +19,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="com.example.app.list.MainActivity" />
     </application>
 
 </manifest>
