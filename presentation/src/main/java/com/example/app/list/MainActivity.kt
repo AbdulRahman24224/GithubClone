@@ -35,11 +35,13 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.common.ui.AppColors
 import com.example.common.ui.theme.GithubCloneTheme
 import com.example.common.ui.CircleImage
+import com.example.common.ui.bars.ChangeStatusBarColor
 import com.example.common.ui.errors.ConnectionErrorView
 import com.example.common.ui.errors.MessageBar
 import com.example.common.ui.sH
@@ -72,6 +74,7 @@ class MainActivity : ComponentActivity() {
         onRetryLoading: () -> Unit
     ) {
 
+        ChangeStatusBarColor()
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
@@ -190,10 +193,11 @@ class MainActivity : ComponentActivity() {
                         text = repo.description ?: "",
                         maxLines = 3,
                         overflow = TextOverflow.Ellipsis,
-                        style = MaterialTheme.typography.bodyLarge
+                        style = MaterialTheme.typography.bodyLarge.copy(textAlign = TextAlign.Start )
                     )
                     sV(h = 8)
                     Row(
+                        modifier = Modifier.align(Alignment.Start) ,
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(5.dp)
                     ) {
@@ -202,8 +206,10 @@ class MainActivity : ComponentActivity() {
                             CircleDot(color = MaterialTheme.colorScheme.onPrimary, size = 12)
 
                             Text(text = repo.language!!)
+
+                            sH(w = 20)
                         }
-                        sH(w = 20)
+
 
                         if (repo.stars!! > 0) {
                             Image(

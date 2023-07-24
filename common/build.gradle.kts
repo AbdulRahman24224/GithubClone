@@ -61,6 +61,7 @@ dependencies {
     implementation(Lib.COMPOSE_LIFECYCLE_VIEWMODEL)
     implementation(Lib.CONSTRAINTLAYOUT_COMPOSE)
     implementation(Lib.ACCOMPANIST_PLACEHOLDER)
+    implementation(Lib.SYSTEM_UI_CONTROLLER)
     implementation (Lib.COMPOSE_MATERIAL)
     implementation(Lib.LOTTIE_COMPOSE)
 
