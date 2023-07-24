@@ -79,9 +79,13 @@ class ReposListViewModel @Inject constructor(
 
         viewModelScope.launch {
 
+            if (_viewState.value.isLoadingLocal || _viewState.value.isLoading) return@launch
+
+            _viewState.update { it.copy(isLoadingLocal = true) }
             val localRepos =
                 withContext(Dispatchers.IO) { getLocaleReposByStarsUseCase(_viewState.value.page) }
 
+            _viewState.update { it.copy(isLoadingLocal = false) }
             if (localRepos.isEmpty()) {
                 _viewState.update { it.copy(hasNoMoreLocaleData = true) }
                 getRemoteRepos()

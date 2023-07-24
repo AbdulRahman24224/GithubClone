@@ -46,6 +46,7 @@ fun MessageBar(
                     .requiredSize(30.dp)
                     .align(Alignment.CenterVertically),
                 painter = painterResource(id = icon),
+                tint = AppColors.White,
                 contentDescription = "",
             )
 
