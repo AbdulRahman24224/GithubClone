@@ -233,6 +233,22 @@ class ReposListViewModelTest {
     }
 
     @Test
+    fun `getRemoteRepos() after success call hides error messages and views`() {
+        runTest {
+
+            val viewState = ReposListViewState(hasNoMoreLocaleData = true, page = 1)
+            reposListViewModel._viewState.value = viewState
+
+            reposListViewModel.loadRepos()
+
+            reposListViewModel._viewState.test {
+                assert(awaitItem().isApiUnreachable.not())
+            }
+
+        }
+    }
+
+    @Test
     fun `getRemoteRepos() with failure result after first call shows toast error message`() {
         runTest {
 
