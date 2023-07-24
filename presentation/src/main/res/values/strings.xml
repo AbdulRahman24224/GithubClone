@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">app</string>
+    <string name="app_name">GithubClone</string>
+    <string name="lis_btn_retry">أعد المحاولة</string>
 </resources>

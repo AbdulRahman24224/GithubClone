@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="general_something_went_wrong">Something went wrong..</string>
+    <string name="general_network_alien">An alien is probably blocking your signal.</string>
+</resources>
