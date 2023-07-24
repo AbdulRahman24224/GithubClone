@@ -49,9 +49,6 @@ dependencies {
     implementation (Lib.COMPOSE_MATERIAL)
     implementation(Lib.LIFECYCLE_RUNTIME_KTX)
     implementation(Lib.COIL)
-    implementation(Lib.WORK)
-    implementation(Lib.NAVIGATION_FRAGMENT_KTX)
-    implementation(Lib.NAVIGATION_UI_KTX)
     debugImplementation(Lib.COMPOSE_UI_TOOLING)
 
     implementation(Lib.KOTLIN_STDLIB)
@@ -79,8 +76,6 @@ dependencies {
 
     //DI
     implementation(Lib.HILT_ANDROID)
-    implementation(Lib.HILT_WORK)
-
     kapt(Lib.HILT_WORK_KAPT)
     kapt(Lib.HILT_ANDROID_COMPILER)
     kapt(Lib.ROOM_COMPILER)

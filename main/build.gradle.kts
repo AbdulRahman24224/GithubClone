@@ -83,16 +83,11 @@ dependencies {
 
     //DI
     implementation(Lib.HILT_ANDROID)
-    implementation(Lib.HILT_WORK)
+    implementation(Lib.WORK)
     kapt(Lib.HILT_WORK_KAPT)
 
     kapt(Lib.HILT_ANDROID_COMPILER)
     kapt(Lib.ROOM_COMPILER)
-
-    implementation(Lib.WORK)
-
-    implementation(Lib.NAVIGATION_UI_KTX)
-    implementation(Lib.NAVIGATION_FRAGMENT_KTX)
 
     implementation(project(Modules.COMMON))
     implementation(project(Modules.DOMAIN_MODELS))

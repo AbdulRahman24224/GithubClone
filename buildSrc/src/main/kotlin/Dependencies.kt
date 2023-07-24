@@ -57,6 +57,7 @@ object Lib {
         "androidx.lifecycle:lifecycle-viewmodel-ktx:${Version.LIFECYCLE}"
     const val LIFECYCLE_RUNTIME_KTX =
         "androidx.lifecycle:lifecycle-runtime-ktx:${Version.LIFECYCLE}"
+    const val WORK = "androidx.work:work-runtime-ktx:${Version.WORK}"
 
     const val LOCAL_BROADCAST =
         "androidx.localbroadcastmanager:localbroadcastmanager:1.0.0"
@@ -66,21 +67,15 @@ object Lib {
     const val FRAGMENT_KTX = "androidx.fragment:fragment-ktx:${Version.FRAGMENT_KTX}"
     const val SYSTEM_UI_CONTROLLER = "com.google.accompanist:accompanist-systemuicontroller:0.17.0"
     const val HILT_ANDROID = "com.google.dagger:hilt-android:${Version.HILT}"
-    const val HILT_WORK = "androidx.hilt:hilt-work:1.0.0"
     const val HILT_WORK_KAPT = "androidx.hilt:hilt-compiler:1.0.0"
     const val HILT_ANDROID_COMPILER = "com.google.dagger:hilt-android-compiler:${Version.HILT}"
     const val TIMBER = "com.jakewharton.timber:timber:${Version.TIMBER}"
     const val KOTLINX_COROUTINES_ANDROID =
         "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Version.COROUTINES}"
-    const val NAVIGATION_FRAGMENT_KTX =
-        "androidx.navigation:navigation-fragment-ktx:${Version.NAVIGATION}"
-    const val NAVIGATION_UI_KTX = "androidx.navigation:navigation-ui-ktx:${Version.NAVIGATION}"
 
     const val ROOM_RUNTIME = "androidx.room:room-runtime:${Version.ROOM}"
     const val ROOM_KTX = "androidx.room:room-ktx:${Version.ROOM}"
     const val ROOM_COMPILER = "androidx.room:room-compiler:${Version.ROOM}"
-    const val SQL_CIPHER = "net.zetetic:android-database-sqlcipher:4.5.3"
-    const val SQLITE = "androidx.sqlite:sqlite:2.0.1"
 
     const val SECURITY_CRYPTO = "androidx.security:security-crypto:1.1.0-alpha06"
 
@@ -99,7 +94,8 @@ object Lib {
     // compose
     const val COMPOSE_UI = "androidx.compose.ui:ui:${Version.COMPOSE}"
 
-
+    const val ACCOMPANIST_PLACEHOLDER =
+        "com.google.accompanist:accompanist-placeholder:${Version.ACCOMPANIST}"
     // Animations
     const val COMPOSE_ANIMATION = "androidx.compose.animation:animation:${Version.COMPOSE}"
 
@@ -115,58 +111,14 @@ object Lib {
     const val LOTTIE_COMPOSE = "com.airbnb.android:lottie-compose:${Version.LOTTIE_VERSION}"
     const val COIL = "io.coil-kt:coil-compose:${Version.COIL}"
 
-    const val CONSTRAINTLAYOUT_COMPOSE =
-        "androidx.constraintlayout:constraintlayout-compose:1.0.0-beta02"
 
-    const val ACCOMPANIST_INSETS =
-        "com.google.accompanist:accompanist-insets:${Version.ACCOMPANIST}"
-    const val ACCOMPANIST_SYSTEMUICONTROLLER =
-        "com.google.accompanist:accompanist-systemuicontroller:${Version.ACCOMPANIST}"
-    const val ACCOMPANIST_APPCOMPAT =
-        "com.google.accompanist:accompanist-appcompat-theme:${Version.ACCOMPANIST}"
-    const val ACCOMPANIST_PAGER = "com.google.accompanist:accompanist-pager:${Version.ACCOMPANIST}"
-    const val ACCOMPANIST_PERMISSIONS =
-        "com.google.accompanist:accompanist-permissions:${Version.ACCOMPANIST}"
-    const val ACCOMPANIST_FLOWLAYOUT =
-        "com.google.accompanist:accompanist-flowlayout:${Version.ACCOMPANIST}"
-    const val ACCOMPANIST_NAVIGATION_ANIMATION =
-        "com.google.accompanist:accompanist-navigation-animation:${Version.ACCOMPANIST}"
-    const val ACCOMPANIST_NAVIGATION_MATERIAL =
-        "com.google.accompanist:accompanist-navigation-material:${Version.ACCOMPANIST}"
-    const val ACCOMPANIST_DRAWABLEPAINTER =
-        "com.google.accompanist:accompanist-drawablepainter:${Version.ACCOMPANIST}"
-    const val ACCOMPANIST_SWIPEREFRESH =
-        "com.google.accompanist:accompanist-swiperefresh:${Version.ACCOMPANIST}"
-    const val ACCOMPANIST_PAGER_INDICATOR =
-        "com.google.accompanist:accompanist-pager-indicators:${Version.ACCOMPANIST}"
-
-    const val ACCOMPANIST_PLACEHOLDER =
-        "com.google.accompanist:accompanist-placeholder:${Version.ACCOMPANIST}"
-
-    const val FIREBASE_BOM = "com.google.firebase:firebase-bom:${Version.FIREBASE}"
-    const val FIREBASE_ANALYTICS = "com.google.firebase:firebase-analytics-ktx"
-    const val FIREBASE_CRASHLYTICS = "com.google.firebase:firebase-crashlytics-ktx"
-    const val FIREBASE_MESSAGING = "com.google.firebase:firebase-messaging-ktx"
-
-
-    const val PLAY_SERVICE_AUTH = "com.google.android.gms:play-services-auth:20.0.1"
-    const val PLAY_SERVICE_LOCATION = "com.google.android.gms:play-services-location:19.0.1"
-    const val PLAY_SERVICE_PHONE_AUTH = "com.google.android.gms:play-services-auth-api-phone:18.0.1"
-    const val PLAY_SERVICE_ADS_IDENTIFIER =
-        "com.google.android.gms:play-services-ads-identifier:17.0.1"
-    const val WORK = "androidx.work:work-runtime-ktx:${Version.WORK}"
 
     //Testing
-    const val TRUTH = "com.google.truth:truth:1.0"
     const val ANDROID_CORE_TESTING = "androidx.arch.core:core-testing:2.2.0"
     const val COROUTINES_TEST = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Version.COROUTINES}"
     const val MOCKK = "io.mockk:mockk:1.13.5"
     const val JUNIT = "junit:junit:4.13.2"
-    const val ANDROID_TEST_CORE = "androidx.test:core:1.3.0"
     const val ANDROID_TEST_EXT = "androidx.test.ext:junit:1.5.2"
-    const val MOCKITO_CORE = "org.mockito:mockito-core:2.21.0"
-    const val MOCKITO_INLINE = "org.mockito:mockito-inline:2.13.0"
-    const val COMPOSE_UI_TEST_JUNIT4 = "androidx.compose.ui:ui-test-junit4:${Version.COMPOSE}"
     const val TURBINE = "app.cash.turbine:turbine:1.0.0"
 
 
