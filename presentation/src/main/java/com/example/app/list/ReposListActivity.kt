@@ -4,11 +4,13 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.appcompat.widget.Toolbar
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,11 +23,16 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -41,6 +48,7 @@ import androidx.compose.ui.unit.dp
 import com.example.common.ui.AppColors
 import com.example.common.ui.theme.GithubCloneTheme
 import com.example.common.ui.CircleImage
+import com.example.common.ui.bars.AppToolbar
 import com.example.common.ui.bars.ChangeStatusBarColor
 import com.example.common.ui.errors.ConnectionErrorView
 import com.example.common.ui.errors.MessageBar
@@ -53,7 +61,7 @@ import com.example.githubClone.R
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class ReposListActivity : ComponentActivity() {
 
     val viewModel by viewModels<ReposListViewModel>()
 
@@ -86,6 +94,18 @@ class MainActivity : ComponentActivity() {
             Box (modifier = Modifier.fillMaxSize()){
 
                 Column(Modifier.fillMaxSize()) {
+
+                    AppToolbar(
+                        title = stringResource(R.string.trending),
+                        optionsIcon = {
+                            Icon(
+                                imageVector = Icons.Filled.MoreVert,
+                                tint = MaterialTheme.colorScheme.onSurface,
+                                modifier = Modifier.padding(end = 12.dp).clickable {  },
+                                contentDescription = "Search",
+                            )
+                        },
+                    )
 
                     if (viewState.value.isApiUnreachable && viewState.value.isLoading.not())
                         ConnectionError(onRetryLoading)

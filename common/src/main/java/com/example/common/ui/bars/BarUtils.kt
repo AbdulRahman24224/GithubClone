@@ -10,7 +10,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
 fun ChangeStatusBarColor(
-    statusBarColor: Color = MaterialTheme.colorScheme.primary,
+    statusBarColor: Color = MaterialTheme.colorScheme.surface,
     navigationBarColor: Color = MaterialTheme.colorScheme.primary,
     darkIcons: Boolean = isSystemInDarkTheme().not()
 ) {
