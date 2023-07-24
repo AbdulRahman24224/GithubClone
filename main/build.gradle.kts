@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.config.JvmAnalysisFlags.useIR
+import java.net.InetAddress.getByName
 
 plugins {
     id(Plugins.ANDROID_APPLICATION)
@@ -30,8 +31,6 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
 
-
-
     buildFeatures {
         compose = true
     }
@@ -46,6 +45,14 @@ android {
         }
     }
 
+    buildTypes{
+
+        release {
+            isMinifyEnabled = true
+            isShrinkResources = true
+        }
+
+    }
 
 }
 
