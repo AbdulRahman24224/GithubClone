@@ -6,4 +6,5 @@ data class ReposListViewState(
     val page : Int = 1 ,
     val snackBarMessage : String? = null,
     val hasLoadedAllData : Boolean = false,
+    val isApiUnreachable : Boolean = false,
 )

@@ -3,7 +3,6 @@ package com.example.app.list
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.common.utils.datetime.DateTimeUtils
-import com.example.common.utils.datetime.DateTimeUtilsImpl
 import com.example.domain_models.PREFERENCE_KEYS
 import com.example.domain_models.network.DataResult
 import com.example.domain_models.network.NetworkException
@@ -40,6 +39,8 @@ class ReposListViewModel @Inject constructor(
 
     val _viewState = MutableStateFlow<ReposListViewState>(ReposListViewState())
     val viewState = _viewState.asStateFlow()
+
+    val availablePages = 34
 
     init {
         loadRepos()
@@ -121,16 +122,22 @@ class ReposListViewModel @Inject constructor(
                     // Todo : This logic should be replaced by a flag from BE
                     if (nextPage > availablePages) _viewState.update { it.copy(hasLoadedAllData = true) }
 
+                    _viewState.update { it.copy(isApiUnreachable = false , snackBarMessage = null) }
                 }
 
                 is DataResult.Failure -> {
 
-                    _viewState.update { it.copy(snackBarMessage = result.throwable.localizedMessage) }
+
                     when (result.throwable) {
-                        is NetworkException -> {/* Todo :  show error or load from Locale*/
+                        is NetworkException -> {
+                            if (currentPage == 1)
+                                _viewState.update { it.copy(isApiUnreachable = true) }
+                            else
+                                _viewState.update { it.copy(snackBarMessage = result.throwable.localizedMessage) }
                         }
 
-                        else -> {/*  Todo:  Api error show toast */
+                        else -> {
+                            _viewState.update { it.copy(snackBarMessage = result.throwable.localizedMessage) }
                         }
                     }
                 }
@@ -165,14 +172,14 @@ class ReposListViewModel @Inject constructor(
             _viewState.update {
                 val nextPage = it.page.plus(1)
 
-                it.copy(isLoading = false, page = nextPage)
+                it.copy(page = nextPage)
             }
         }
 
     }
 
     companion object {
-        private const val availablePages = 34
+
         private const val TWO_MINUTES_MILLIS = 120000
     }
 

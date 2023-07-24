@@ -158,7 +158,6 @@ class ReposListViewModelTest {
     }
 
 
-
     @Test
     fun `getRemoteRepos() invocation changes isLoading to true then false `() {
         runTest {
@@ -190,14 +189,21 @@ class ReposListViewModelTest {
     fun `getRemoteRepos() with last available page changes hasLoadedAllData to true   `() {
         runTest {
 
-            coEvery { getRemoteReposByStarsUseCase(34) } returns DataResult.Success(mockSuccessResult)
+            coEvery {
+                getRemoteReposByStarsUseCase(reposListViewModel.availablePages)
+            } returns DataResult.Success(mockSuccessResult)
+
             val viewState =
-                ReposListViewState(hasLoadedAllData = false, hasNoMoreLocaleData = true, page = 34)
+                ReposListViewState(
+                    hasLoadedAllData = false,
+                    hasNoMoreLocaleData = true,
+                    page = reposListViewModel.availablePages
+                )
             reposListViewModel._viewState.value = viewState
 
             reposListViewModel.loadRepos()
 
-            coVerify { getRemoteReposByStarsUseCase(34) }
+            coVerify { getRemoteReposByStarsUseCase(reposListViewModel.availablePages) }
 
             assertEquals(true, reposListViewModel._viewState.value.hasLoadedAllData)
 
@@ -205,7 +211,7 @@ class ReposListViewModelTest {
     }
 
     @Test
-    fun `getRemoteRepos() with failure result toast error message`() {
+    fun `getRemoteRepos() with Network related Exception in first call shows api failure view`() {
         runTest {
 
             coEvery { getRemoteReposByStarsUseCase(1) } returns DataResult.Failure(
@@ -215,6 +221,28 @@ class ReposListViewModelTest {
             )
 
             val viewState = ReposListViewState(hasNoMoreLocaleData = true, page = 1)
+            reposListViewModel._viewState.value = viewState
+
+            reposListViewModel.loadRepos()
+
+            reposListViewModel._viewState.test {
+                assert(awaitItem().isApiUnreachable)
+            }
+
+        }
+    }
+
+    @Test
+    fun `getRemoteRepos() with failure result after first call shows toast error message`() {
+        runTest {
+
+            coEvery { getRemoteReposByStarsUseCase(2) } returns DataResult.Failure(
+                NetworkException(
+                    "error"
+                )
+            )
+
+            val viewState = ReposListViewState(hasNoMoreLocaleData = true, page = 2)
             reposListViewModel._viewState.value = viewState
 
             reposListViewModel.loadRepos()
