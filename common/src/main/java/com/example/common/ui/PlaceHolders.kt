@@ -10,7 +10,7 @@ import com.google.accompanist.placeholder.shimmer
 fun Modifier.shimmerPlaceHolder(isVisible: Boolean) = composed {
     this.placeholder(
         visible = isVisible,
-        highlight = PlaceholderHighlight.shimmer(AppColors.Grey100),
-        color = AppColors.Grey200
+        highlight = PlaceholderHighlight.shimmer(AppColors.Grey300),
+        color = AppColors.Grey100
     )
 }
