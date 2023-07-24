@@ -10,9 +10,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.example.githubclone.R
 
 @Composable
 fun CircleImage (
@@ -33,7 +35,7 @@ fun CircleImage (
             model = ImageRequest.Builder(LocalContext.current)
                 .data(path)
                 .build(),
-            /*placeholder = painterResource(id = com.nexta.resources.R.drawable.ic_nexta_n),*/
+            placeholder = painterResource(id = R.drawable.ic_warning),
             contentDescription = "",
             contentScale = ContentScale.Crop,
         )

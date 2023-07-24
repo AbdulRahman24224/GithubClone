@@ -99,8 +99,6 @@ object Lib {
     // compose
     const val COMPOSE_UI = "androidx.compose.ui:ui:${Version.COMPOSE}"
 
-    // Compose Material Design
-    const val COMPOSE_MATERIAL = "androidx.compose.material:material:${Version.COMPOSE}"
 
     // Animations
     const val COMPOSE_ANIMATION = "androidx.compose.animation:animation:${Version.COMPOSE}"
@@ -111,6 +109,8 @@ object Lib {
     // Integration with ViewModels
     const val COMPOSE_LIFECYCLE_VIEWMODEL =
         "androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha07"
+
+    const val COMPOSE_MATERIAL= "androidx.compose.material3:material3:1.0.0"
 
     const val LOTTIE_COMPOSE = "com.airbnb.android:lottie-compose:${Version.LOTTIE_VERSION}"
     const val COIL = "io.coil-kt:coil-compose:${Version.COIL}"

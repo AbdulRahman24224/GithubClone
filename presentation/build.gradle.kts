@@ -46,7 +46,7 @@ dependencies {
     implementation(Lib.COMPOSE_ANIMATION)
     implementation(Lib.COMPOSE_UI_TOOLING)
     implementation(Lib.COMPOSE_LIFECYCLE_VIEWMODEL)
-    implementation ("androidx.compose.material3:material3:1.0.0")
+    implementation (Lib.COMPOSE_MATERIAL)
     implementation(Lib.LIFECYCLE_RUNTIME_KTX)
     implementation(Lib.COIL)
     implementation(Lib.WORK)
@@ -80,7 +80,6 @@ dependencies {
     //DI
     implementation(Lib.HILT_ANDROID)
     implementation(Lib.HILT_WORK)
-
 
     kapt(Lib.HILT_WORK_KAPT)
     kapt(Lib.HILT_ANDROID_COMPILER)

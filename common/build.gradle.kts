@@ -61,7 +61,9 @@ dependencies {
     implementation(Lib.COMPOSE_LIFECYCLE_VIEWMODEL)
     implementation(Lib.CONSTRAINTLAYOUT_COMPOSE)
     implementation(Lib.ACCOMPANIST_PLACEHOLDER)
+    implementation (Lib.COMPOSE_MATERIAL)
     implementation(Lib.LOTTIE_COMPOSE)
+
     implementation(Lib.COIL)
     implementation(Lib.HILT_ANDROID)
     kapt(Lib.HILT_ANDROID_COMPILER)
