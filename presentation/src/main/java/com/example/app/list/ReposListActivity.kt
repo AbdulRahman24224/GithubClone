@@ -95,17 +95,7 @@ class ReposListActivity : ComponentActivity() {
 
                 Column(Modifier.fillMaxSize()) {
 
-                    AppToolbar(
-                        title = stringResource(R.string.trending),
-                        optionsIcon = {
-                            Icon(
-                                imageVector = Icons.Filled.MoreVert,
-                                tint = MaterialTheme.colorScheme.onSurface,
-                                modifier = Modifier.padding(end = 12.dp).clickable {  },
-                                contentDescription = "Search",
-                            )
-                        },
-                    )
+                    Toolbar()
 
                     if (viewState.value.isApiUnreachable && viewState.value.isLoading.not())
                         ConnectionError(onRetryLoading)
@@ -117,6 +107,23 @@ class ReposListActivity : ComponentActivity() {
             }
 
         }
+    }
+
+    @Composable
+    private fun Toolbar() {
+        AppToolbar(
+            title = stringResource(R.string.trending),
+            optionsIcon = {
+                Icon(
+                    imageVector = Icons.Filled.MoreVert,
+                    tint = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier
+                        .padding(end = 12.dp)
+                        .clickable { },
+                    contentDescription = "Menu",
+                )
+            },
+        )
     }
 
     @Composable
@@ -167,7 +174,7 @@ class ReposListActivity : ComponentActivity() {
             modifier = Modifier.fillMaxSize()
         ) {
 
-            itemsIndexed(reposList) { index, repo -> RepoItem(repo) }
+            itemsIndexed(reposList) { _, repo -> RepoItem(repo) }
 
             item {
 
@@ -178,8 +185,6 @@ class ReposListActivity : ComponentActivity() {
             }
         }
     }
-
-
 
     @Composable
     private fun RepoItem(repo: Repo) {

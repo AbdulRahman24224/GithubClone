@@ -246,6 +246,8 @@ class ReposListViewModelTest {
             }
 
         }
+
+
     }
 
     @Test
