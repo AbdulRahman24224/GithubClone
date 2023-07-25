@@ -7,6 +7,7 @@ import com.example.domain_models.PREFERENCE_KEYS
 import com.example.domain_models.network.DataResult
 import com.example.domain_models.network.NetworkException
 import com.example.domain_models.repos.Repo
+import com.example.githubClone.R
 import com.example.usecases.products.ClearCachedReposUseCase
 import com.example.usecases.products.GetLocaleReposByStarsUseCase
 import com.example.usecases.products.GetPreferenceValueUseCase
@@ -206,6 +207,7 @@ class ReposListViewModelTest {
             coVerify { getRemoteReposByStarsUseCase(reposListViewModel.availablePages) }
 
             assertEquals(true, reposListViewModel._viewState.value.hasLoadedAllData)
+            assert( reposListViewModel._viewState.value.snackBarMessage is Int)
 
         }
     }
@@ -287,11 +289,13 @@ class ReposListViewModelTest {
 
             coVerify { clearCachedReposUseCase() }
 
-            assertEquals(1, reposListViewModel._viewState.value.page)
-            assertTrue(reposListViewModel._viewState.value.hasNoMoreLocaleData)
+            val viewState_ = reposListViewModel._viewState.value
+            assertEquals(1, viewState_.page)
+            assertTrue(viewState_.hasNoMoreLocaleData)
+            assertTrue(viewState_.hasLoadedAllData.not())
+            assertTrue(viewState_.snackBarMessage == null)
 
         }
-
 
     @Test
     fun `checkCacheInvalidation should not clear cache when currentDate is before cacheInvalidationDate`() =
@@ -312,6 +316,27 @@ class ReposListViewModelTest {
             assertTrue(reposListViewModel._viewState.value.hasNoMoreLocaleData.not())
 
         }
+
+    @Test
+    fun `checkCacheInvalidation should clear cache when invalidateCache is true`() =
+        runTest {
+
+            val viewState = ReposListViewState(hasNoMoreLocaleData = false, page = 2)
+            reposListViewModel._viewState.value = viewState
+
+            coEvery { getPreferenceValueUseCase(PREFERENCE_KEYS.CACHE_INVALIDATION_DATE) } returns "10"
+            coEvery { dateTimeUtils.currentDate() } returns Date(9)
+
+
+            reposListViewModel.checkCacheInvalidation(true)
+
+            coVerify { clearCachedReposUseCase() }
+
+            assertEquals(1, reposListViewModel._viewState.value.page)
+            assertTrue(reposListViewModel._viewState.value.hasNoMoreLocaleData)
+
+        }
+
 
 
     @Test

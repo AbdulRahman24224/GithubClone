@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.appcompat.widget.Toolbar
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -24,7 +23,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
@@ -32,7 +30,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -46,7 +44,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.common.ui.AppColors
-import com.example.common.ui.theme.GithubCloneTheme
 import com.example.common.ui.CircleImage
 import com.example.common.ui.bars.AppToolbar
 import com.example.common.ui.bars.ChangeStatusBarColor
@@ -56,6 +53,7 @@ import com.example.common.ui.sH
 import com.example.common.ui.sV
 import com.example.common.ui.shapes.CircleDot
 import com.example.common.ui.shimmerPlaceHolder
+import com.example.common.ui.theme.GithubCloneTheme
 import com.example.domain_models.repos.Repo
 import com.example.githubClone.R
 import dagger.hilt.android.AndroidEntryPoint
@@ -72,14 +70,20 @@ class ReposListActivity : ComponentActivity() {
 
             GithubCloneTheme {
 
-                ReposListScreen(onRetryLoading = { viewModel.loadRepos() })
+                ReposListScreen(
+                    onRetryLoading = { viewModel.loadRepos() },
+                    onClearAndReload = { viewModel.loadRepos(true) }
+                )
+
             }
         }
     }
 
+
     @Composable
     private fun ReposListScreen(
-        onRetryLoading: () -> Unit
+        onRetryLoading: () -> Unit,
+        onClearAndReload: () -> Unit
     ) {
 
         ChangeStatusBarColor()
@@ -91,7 +95,7 @@ class ReposListActivity : ComponentActivity() {
             val reposList = viewModel.reposList.collectAsState()
             val viewState = viewModel.viewState.collectAsState()
 
-            Box (modifier = Modifier.fillMaxSize()){
+            Box(modifier = Modifier.fillMaxSize()) {
 
                 Column(Modifier.fillMaxSize()) {
 
@@ -103,7 +107,11 @@ class ReposListActivity : ComponentActivity() {
                         ReposList(reposList.value, viewState.value)
                 }
 
-                SnackBar(viewState.value)
+                SnackBar(
+                    viewState.value,
+                    onRetryLoading = onRetryLoading,
+                    onClearAndReload = onClearAndReload
+                )
             }
 
         }
@@ -146,20 +154,42 @@ class ReposListActivity : ComponentActivity() {
     }
 
     @Composable
-    private fun SnackBar(viewState: ReposListViewState) {
+    private fun SnackBar(
+        viewState: ReposListViewState,
+        onRetryLoading: () -> Unit = {},
+        onClearAndReload: () -> Unit = {}
+    ) {
         Column(modifier = Modifier.fillMaxSize()) {
 
             Spacer(modifier = Modifier.weight(1f))
+
+            val message = viewState.snackBarMessage
             AnimatedVisibility(
-                visible = viewState.snackBarMessage != null,
+                visible = message != null,
                 enter = fadeIn(),
                 exit = fadeOut()
             ) {
 
                 MessageBar(
-                    modifier = Modifier.padding( 10.dp),
-                    message = viewState.snackBarMessage?:"",
+                    modifier = Modifier.padding(10.dp),
+                    message = message?.let { if (it is String) it else stringResource(it as Int) }
+                        ?: "",
+                    actions = {
+
+                            TextButton(
+                                onClick = { if (viewState.hasLoadedAllData) onClearAndReload()  else onRetryLoading()  },
+                                content = {
+                                    Text(
+                                        text = stringResource(R.string.lis_btn_retry),
+                                        style = MaterialTheme.typography.bodyMedium.copy(color = AppColors.Primary600)
+                                    )
+                                },
+                            )
+                    } ,
+                    backgroundColor = if (viewState.hasLoadedAllData) AppColors.Green1 else AppColors.Error,
                 )
+
+
             }
         }
 
@@ -218,11 +248,11 @@ class ReposListActivity : ComponentActivity() {
                         text = repo.description ?: "",
                         maxLines = 3,
                         overflow = TextOverflow.Ellipsis,
-                        style = MaterialTheme.typography.bodyLarge.copy(textAlign = TextAlign.Start )
+                        style = MaterialTheme.typography.bodyLarge.copy(textAlign = TextAlign.Start)
                     )
                     sV(h = 8)
                     Row(
-                        modifier = Modifier.align(Alignment.Start) ,
+                        modifier = Modifier.align(Alignment.Start),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(5.dp)
                     ) {

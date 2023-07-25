@@ -29,6 +29,7 @@ fun MessageBar(
     backgroundColor: Color = AppColors.Error,
     icon: Int = com.example.githubclone.R.drawable.ic_warning,
     barShape: RoundedCornerShape = RoundedCornerShape(5.dp),
+    actions: @Composable RowScope.() -> Unit = {},
 ) {
     Surface(
         modifier = modifier,
@@ -37,7 +38,7 @@ fun MessageBar(
         Row(
             modifier = contentModifier,
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center,
+            horizontalArrangement = Arrangement.Start,
         ) {
 
             Icon(
@@ -52,6 +53,9 @@ fun MessageBar(
 
             sH(10)
             Text(message, style = MaterialTheme.typography.bodyMedium.copy(color = AppColors.White))
+
+            Spacer(modifier =Modifier.weight(1f))
+            actions()
         }
     }
 }
