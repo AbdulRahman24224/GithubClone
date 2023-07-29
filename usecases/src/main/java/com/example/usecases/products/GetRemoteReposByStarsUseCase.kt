@@ -5,5 +5,5 @@ import com.example.domain_models.repos.Repo
 
 interface GetRemoteReposByStarsUseCase {
 
-    suspend operator  fun invoke(page :Int): DataResult<List<Repo>>
+    suspend operator  fun invoke(page :Int , currentTime : Long): DataResult<List<Repo>>
 }
