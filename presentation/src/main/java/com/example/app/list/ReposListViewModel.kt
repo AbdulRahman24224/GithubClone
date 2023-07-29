@@ -11,8 +11,6 @@ import com.example.githubClone.R
 import com.example.usecases.products.CachedReposInvalidationUseCase
 import com.example.usecases.products.GetLocaleReposByStarsUseCase
 import com.example.usecases.products.GetRemoteReposByStarsUseCase
-import com.example.usecases.products.SavePreferenceValueUseCase
-import com.example.usecases.products.SaveReposLocallyUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,8 +24,6 @@ import javax.inject.Inject
 class ReposListViewModel @Inject constructor(
     private val getRemoteReposByStarsUseCase: GetRemoteReposByStarsUseCase,
     private val getLocaleReposByStarsUseCase: GetLocaleReposByStarsUseCase,
-    private val saveReposLocallyUseCase: SaveReposLocallyUseCase,
-    private val savePreferenceValueUseCase: SavePreferenceValueUseCase,
     private val cacheInvalidationUseCase: CachedReposInvalidationUseCase,
     private val dateTimeUtils: DateTimeUtils
 
@@ -87,8 +83,8 @@ class ReposListViewModel @Inject constructor(
             _viewState.update { it.copy(isLoadingLocal = true) }
             val localRepos =
                 withContext(Dispatchers.IO) { getLocaleReposByStarsUseCase(_viewState.value.page) }
-
             _viewState.update { it.copy(isLoadingLocal = false) }
+
             if (localRepos.isEmpty()) {
                 _viewState.update { it.copy(hasNoMoreLocaleData = true) }
                 getRemoteRepos()
@@ -110,21 +106,15 @@ class ReposListViewModel @Inject constructor(
             val nextPage = currentPage.plus(1)
 
             _viewState.update { it.copy(isLoading = true) }
-
             val result = withContext(Dispatchers.IO) {
-                getRemoteReposByStarsUseCase(currentPage)
+                getRemoteReposByStarsUseCase(_viewState.value.page , getCurrentDateInMillis())
             }
-
             _viewState.update { it.copy(isLoading = false) }
 
             when (result) {
                 is DataResult.Success -> {
 
-                    val repos = result.data
-
-                    cacheResults(repos, currentPage)
-
-                    addPageToList(repos)
+                    addPageToList(result.data)
 
                     _viewState.update { it.copy(isApiUnreachable = false, snackBarMessage = null) }
 
@@ -135,12 +125,9 @@ class ReposListViewModel @Inject constructor(
                             snackBarMessage = R.string.you_loaded_all_data_pull_to_refresh_to_load_more
                         )
                     }
-
-
                 }
 
                 is DataResult.Failure -> {
-
 
                     when (result.throwable) {
                         is NetworkException -> {
@@ -160,23 +147,6 @@ class ReposListViewModel @Inject constructor(
 
     }
 
-    private suspend fun cacheResults(
-        repos: List<Repo>,
-        currentPage: Int
-    ) {
-        withContext(Dispatchers.IO) {
-
-            saveReposLocallyUseCase(repos, currentPage)
-
-            if (currentPage == 1) {
-                savePreferenceValueUseCase(
-                    PREFERENCE_KEYS.CACHE_INVALIDATION_DATE,
-                    (getCurrentDateInMillis() + TWO_MINUTES_MILLIS).toString()
-                )
-            }
-        }
-    }
-
     private fun getCurrentDateInMillis() = dateTimeUtils.currentDate().time
 
     private fun addPageToList(localRepos: List<Repo>) {
@@ -191,11 +161,5 @@ class ReposListViewModel @Inject constructor(
         }
 
     }
-
-    companion object {
-
-        private const val TWO_MINUTES_MILLIS = 120000
-    }
-
 
 }

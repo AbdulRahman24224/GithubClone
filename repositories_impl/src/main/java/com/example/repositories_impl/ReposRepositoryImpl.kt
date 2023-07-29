@@ -16,7 +16,6 @@ class ReposRepositoryImpl @Inject constructor(
 
 
     override suspend fun getRemoteReposByStars(page: Int): DataResult<List<Repo>> {
-        Log.d("request:","request: Repository")
         return remoteReposDataSource.getReposByStars(page)
     }
 
