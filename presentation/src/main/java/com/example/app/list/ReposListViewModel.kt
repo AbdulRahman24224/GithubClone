@@ -8,9 +8,8 @@ import com.example.domain_models.network.DataResult
 import com.example.domain_models.network.NetworkException
 import com.example.domain_models.repos.Repo
 import com.example.githubClone.R
-import com.example.usecases.products.ClearCachedReposUseCase
+import com.example.usecases.products.CachedReposInvalidationUseCase
 import com.example.usecases.products.GetLocaleReposByStarsUseCase
-import com.example.usecases.products.GetPreferenceValueUseCase
 import com.example.usecases.products.GetRemoteReposByStarsUseCase
 import com.example.usecases.products.SavePreferenceValueUseCase
 import com.example.usecases.products.SaveReposLocallyUseCase
@@ -28,9 +27,8 @@ class ReposListViewModel @Inject constructor(
     private val getRemoteReposByStarsUseCase: GetRemoteReposByStarsUseCase,
     private val getLocaleReposByStarsUseCase: GetLocaleReposByStarsUseCase,
     private val saveReposLocallyUseCase: SaveReposLocallyUseCase,
-    private val getPreferenceValueUseCase: GetPreferenceValueUseCase,
     private val savePreferenceValueUseCase: SavePreferenceValueUseCase,
-    private val clearCachedReposUseCase: ClearCachedReposUseCase,
+    private val cacheInvalidationUseCase: CachedReposInvalidationUseCase,
     private val dateTimeUtils: DateTimeUtils
 
 ) : ViewModel() {
@@ -47,11 +45,11 @@ class ReposListViewModel @Inject constructor(
         loadRepos()
     }
 
-    fun loadRepos(invalidateCache : Boolean = false) {
+    fun loadRepos(invalidateCache: Boolean = false) {
 
         viewModelScope.launch {
 
-            checkCacheInvalidation(invalidateCache)
+            withContext(Dispatchers.IO) {checkCacheInvalidation(invalidateCache)}
 
             if (_viewState.value.hasNoMoreLocaleData) getRemoteRepos()
             else getLocaleRepos()
@@ -59,29 +57,32 @@ class ReposListViewModel @Inject constructor(
 
     }
 
-    fun checkCacheInvalidation(invalidateCache : Boolean = false) {
+    suspend fun checkCacheInvalidation(invalidateCache: Boolean = false) {
 
-        viewModelScope.launch {
+            val isCacheInvalidated = withContext(Dispatchers.IO) {
+                cacheInvalidationUseCase(invalidateCache, getCurrentDateInMillis())
+            }
 
-            val cacheInvalidationDate =
-                getPreferenceValueUseCase(PREFERENCE_KEYS.CACHE_INVALIDATION_DATE) ?: "0"
+            if (isCacheInvalidated) {
 
-            if ( invalidateCache || ( getCurrentDateInMillis() >= (cacheInvalidationDate.toLongOrNull() ?: 0))) {
-
-                withContext(Dispatchers.IO) { clearCachedReposUseCase() }
-
-                _viewState.update { it.copy(page = 1, hasNoMoreLocaleData = true , hasLoadedAllData = false , snackBarMessage = null) }
+                _viewState.update {
+                    it.copy(
+                        page = 1,
+                        hasNoMoreLocaleData = true,
+                        hasLoadedAllData = false,
+                        snackBarMessage = null
+                    )
+                }
                 _reposList.emit(emptyList())
             }
 
-        }
     }
 
     private fun getLocaleRepos() {
 
         viewModelScope.launch {
 
-            if (_viewState.value.isLoadingLocal || _viewState.value.isLoading|| _viewState.value.hasLoadedAllData) return@launch
+            if (_viewState.value.isLoadingLocal || _viewState.value.isLoading || _viewState.value.hasLoadedAllData) return@launch
 
             _viewState.update { it.copy(isLoadingLocal = true) }
             val localRepos =
@@ -125,11 +126,14 @@ class ReposListViewModel @Inject constructor(
 
                     addPageToList(repos)
 
-                    _viewState.update { it.copy(isApiUnreachable = false , snackBarMessage = null) }
+                    _viewState.update { it.copy(isApiUnreachable = false, snackBarMessage = null) }
 
                     // Todo : This logic should be replaced by a flag from BE
-                    if (nextPage > availablePages) _viewState.update { 
-                        it.copy(hasLoadedAllData = true , snackBarMessage = R.string.you_loaded_all_data_pull_to_refresh_to_load_more)
+                    if (nextPage > availablePages) _viewState.update {
+                        it.copy(
+                            hasLoadedAllData = true,
+                            snackBarMessage = R.string.you_loaded_all_data_pull_to_refresh_to_load_more
+                        )
                     }
 
 

@@ -13,7 +13,7 @@ class GetRemoteReposByStarsUseCaseImpl @Inject constructor(
 ) : GetRemoteReposByStarsUseCase {
 
     override suspend fun invoke(page : Int): DataResult<List<Repo>> {
-        Log.d("request:","request: usesacase")
+
         return reposRepository.getRemoteReposByStars(page)
 
     }

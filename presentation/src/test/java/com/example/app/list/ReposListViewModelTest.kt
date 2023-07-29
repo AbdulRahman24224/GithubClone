@@ -8,6 +8,7 @@ import com.example.domain_models.network.DataResult
 import com.example.domain_models.network.NetworkException
 import com.example.domain_models.repos.Repo
 import com.example.githubClone.R
+import com.example.usecases.products.CachedReposInvalidationUseCase
 import com.example.usecases.products.ClearCachedReposUseCase
 import com.example.usecases.products.GetLocaleReposByStarsUseCase
 import com.example.usecases.products.GetPreferenceValueUseCase
@@ -55,6 +56,9 @@ class ReposListViewModelTest {
     private lateinit var clearCachedReposUseCase: ClearCachedReposUseCase
 
     @RelaxedMockK
+    private lateinit var cachedReposInvalidationUseCase: CachedReposInvalidationUseCase
+
+    @RelaxedMockK
     private lateinit var dateTimeUtils: DateTimeUtils
 
     private val mockSuccessResult = listOf<Repo>(
@@ -76,11 +80,9 @@ class ReposListViewModelTest {
             getRemoteReposByStarsUseCase,
             getLocaleReposByStarsUseCase,
             saveReposLocallyUseCase,
-            getPreferenceValueUseCase,
-            savePreferenceValueUseCase,
-            clearCachedReposUseCase,
+            savePreferenceValueUseCase ,
+            cachedReposInvalidationUseCase ,
             dateTimeUtils
-
         )
     }
 
@@ -317,6 +319,8 @@ class ReposListViewModelTest {
 
         }
 
+
+    // todo test should be moved to usecase
     @Test
     fun `checkCacheInvalidation should clear cache when invalidateCache is true`() =
         runTest {

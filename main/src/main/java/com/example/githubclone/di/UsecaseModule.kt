@@ -1,11 +1,13 @@
 package com.example.githubclone.di
 
+import com.example.usecases.products.CachedReposInvalidationUseCase
 import com.example.usecases.products.ClearCachedReposUseCase
 import com.example.usecases.products.GetLocaleReposByStarsUseCase
 import com.example.usecases.products.GetPreferenceValueUseCase
 import com.example.usecases.products.GetRemoteReposByStarsUseCase
 import com.example.usecases.products.SavePreferenceValueUseCase
 import com.example.usecases.products.SaveReposLocallyUseCase
+import com.example.usecases_impl.CachedRepoInvalidationUseCaseImpl
 import com.example.usecases_impl.ClearCachedReposUseCaseImpl
 import com.example.usecases_impl.GetLocaleReposByStarsUseCaseImpl
 import com.example.usecases_impl.GetPreferenceValueUseCaseImpl
@@ -51,5 +53,10 @@ interface UseCaseModule {
     fun bindClearCachedReposUseCasee(
         useCase: ClearCachedReposUseCaseImpl,
     ): ClearCachedReposUseCase
+
+    @Binds
+    fun bindCacheInvalidationUseCase(
+        useCase: CachedRepoInvalidationUseCaseImpl,
+    ): CachedReposInvalidationUseCase
 
 }
