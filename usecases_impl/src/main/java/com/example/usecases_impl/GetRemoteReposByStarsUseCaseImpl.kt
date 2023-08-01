@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 class GetRemoteReposByStarsUseCaseImpl @Inject constructor(
     private val reposRepository: ReposRepository,
-    private val settingsRepository: SettingsRepository
+    private val settingsRepository: SettingsRepository,
 ) : GetRemoteReposByStarsUseCase {
 
     override suspend fun invoke(page: Int, currentTime: Long): DataResult<List<Repo>> {

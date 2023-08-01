@@ -41,16 +41,10 @@ class ReposListViewModelTest {
     @RelaxedMockK
     private lateinit var getLocaleReposByStarsUseCase: GetLocaleReposByStarsUseCase
 
-    @RelaxedMockK
-    private lateinit var saveReposLocallyUseCase: SaveReposLocallyUseCase
-
     private lateinit var reposListViewModel: ReposListViewModel
 
     @RelaxedMockK
     private lateinit var getPreferenceValueUseCase: GetPreferenceValueUseCase
-
-    @RelaxedMockK
-    private lateinit var savePreferenceValueUseCase: SavePreferenceValueUseCase
 
     @RelaxedMockK
     private lateinit var clearCachedReposUseCase: ClearCachedReposUseCase
@@ -61,9 +55,7 @@ class ReposListViewModelTest {
     @RelaxedMockK
     private lateinit var dateTimeUtils: DateTimeUtils
 
-    private val mockSuccessResult = listOf<Repo>(
-        Repo(1), Repo(2), Repo(3)
-    )
+    private val mockSuccessResult = listOf<Repo>(Repo(1), Repo(2), Repo(3))
 
 
     @Before
@@ -71,7 +63,7 @@ class ReposListViewModelTest {
 
         MockKAnnotations.init(this)
 
-        coEvery { getRemoteReposByStarsUseCase(1) } returns DataResult.Success(mockSuccessResult)
+        coEvery { getRemoteReposByStarsUseCase(1 ,  0) } returns DataResult.Success(mockSuccessResult)
         coEvery { getLocaleReposByStarsUseCase(1) } returns listOf()
         coEvery { getPreferenceValueUseCase(PREFERENCE_KEYS.CACHE_INVALIDATION_DATE) } returns "10"
         coEvery { dateTimeUtils.currentDate() } returns Date(9)
@@ -79,8 +71,6 @@ class ReposListViewModelTest {
         reposListViewModel = ReposListViewModel(
             getRemoteReposByStarsUseCase,
             getLocaleReposByStarsUseCase,
-            saveReposLocallyUseCase,
-            savePreferenceValueUseCase ,
             cachedReposInvalidationUseCase ,
             dateTimeUtils
         )
@@ -95,7 +85,7 @@ class ReposListViewModelTest {
 
             reposListViewModel.loadRepos()
 
-            coVerify { getRemoteReposByStarsUseCase(1) }
+            coVerify { getRemoteReposByStarsUseCase(1 , 0) }
 
         }
     }
@@ -146,19 +136,6 @@ class ReposListViewModelTest {
         }
     }
 
-    @Test
-    fun `getRemoteRepos() with success result invokes saveReposLocallyUseCase() `() {
-        runTest {
-
-            val viewState = ReposListViewState(hasNoMoreLocaleData = true, page = 1)
-            reposListViewModel._viewState.value = viewState
-
-            reposListViewModel.loadRepos()
-
-            coVerify { saveReposLocallyUseCase(mockSuccessResult, 1) }
-
-        }
-    }
 
 
     @Test
@@ -185,7 +162,7 @@ class ReposListViewModelTest {
 
         reposListViewModel.loadRepos()
 
-        coVerify(exactly = 0) { getRemoteReposByStarsUseCase(1) }
+        coVerify(exactly = 0) { getRemoteReposByStarsUseCase(1 , 0) }
     }
 
     @Test
@@ -193,7 +170,7 @@ class ReposListViewModelTest {
         runTest {
 
             coEvery {
-                getRemoteReposByStarsUseCase(reposListViewModel.availablePages)
+                getRemoteReposByStarsUseCase(reposListViewModel.availablePages , 0)
             } returns DataResult.Success(mockSuccessResult)
 
             val viewState =
@@ -206,7 +183,7 @@ class ReposListViewModelTest {
 
             reposListViewModel.loadRepos()
 
-            coVerify { getRemoteReposByStarsUseCase(reposListViewModel.availablePages) }
+            coVerify { getRemoteReposByStarsUseCase(reposListViewModel.availablePages , 0) }
 
             assertEquals(true, reposListViewModel._viewState.value.hasLoadedAllData)
             assert( reposListViewModel._viewState.value.snackBarMessage is Int)
@@ -218,7 +195,7 @@ class ReposListViewModelTest {
     fun `getRemoteRepos() with Network related Exception in first call shows api failure view`() {
         runTest {
 
-            coEvery { getRemoteReposByStarsUseCase(1) } returns DataResult.Failure(
+            coEvery { getRemoteReposByStarsUseCase(1 , 0) } returns DataResult.Failure(
                 NetworkException(
                     "error"
                 )
@@ -258,7 +235,7 @@ class ReposListViewModelTest {
     fun `getRemoteRepos() with failure result after first call shows toast error message`() {
         runTest {
 
-            coEvery { getRemoteReposByStarsUseCase(2) } returns DataResult.Failure(
+            coEvery { getRemoteReposByStarsUseCase(2,0) } returns DataResult.Failure(
                 NetworkException(
                     "error"
                 )
@@ -276,28 +253,6 @@ class ReposListViewModelTest {
         }
     }
 
-    @Test
-    fun `checkCacheInvalidation should clear cache when currentDate is past cacheInvalidationDate`() =
-        runTest {
-
-            val viewState = ReposListViewState(hasNoMoreLocaleData = false, page = 2)
-            reposListViewModel._viewState.value = viewState
-
-            coEvery { getPreferenceValueUseCase(PREFERENCE_KEYS.CACHE_INVALIDATION_DATE) } returns "10"
-            coEvery { dateTimeUtils.currentDate() } returns Date(10)
-
-
-            reposListViewModel.checkCacheInvalidation()
-
-            coVerify { clearCachedReposUseCase() }
-
-            val viewState_ = reposListViewModel._viewState.value
-            assertEquals(1, viewState_.page)
-            assertTrue(viewState_.hasNoMoreLocaleData)
-            assertTrue(viewState_.hasLoadedAllData.not())
-            assertTrue(viewState_.snackBarMessage == null)
-
-        }
 
     @Test
     fun `checkCacheInvalidation should not clear cache when currentDate is before cacheInvalidationDate`() =
@@ -318,29 +273,6 @@ class ReposListViewModelTest {
             assertTrue(reposListViewModel._viewState.value.hasNoMoreLocaleData.not())
 
         }
-
-
-    // todo test should be moved to usecase
-    @Test
-    fun `checkCacheInvalidation should clear cache when invalidateCache is true`() =
-        runTest {
-
-            val viewState = ReposListViewState(hasNoMoreLocaleData = false, page = 2)
-            reposListViewModel._viewState.value = viewState
-
-            coEvery { getPreferenceValueUseCase(PREFERENCE_KEYS.CACHE_INVALIDATION_DATE) } returns "10"
-            coEvery { dateTimeUtils.currentDate() } returns Date(9)
-
-
-            reposListViewModel.checkCacheInvalidation(true)
-
-            coVerify { clearCachedReposUseCase() }
-
-            assertEquals(1, reposListViewModel._viewState.value.page)
-            assertTrue(reposListViewModel._viewState.value.hasNoMoreLocaleData)
-
-        }
-
 
 
     @Test

@@ -36,6 +36,14 @@ dependencies {
     implementation(Lib.HILT_ANDROID)
     annotationProcessor(Lib.HILT_ANDROID_COMPILER)
 
+    // Testing
+    testImplementation (Lib.ANDROID_CORE_TESTING)
+    testImplementation (Lib.COROUTINES_TEST)
+    testImplementation (Lib.MOCKK)
+    testImplementation (Lib.JUNIT)
+    testImplementation (Lib.TURBINE)
+    androidTestImplementation (Lib.ANDROID_TEST_EXT)
+
     implementation(project(Modules.COMMON))
     implementation(project(Modules.DOMAIN_MODELS))
     implementation(project(Modules.REPOSITORIES))
