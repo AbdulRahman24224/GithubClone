@@ -32,7 +32,6 @@ class GetRemoteReposByStarsUseCaseImplTest{
     @RelaxedMockK
     private lateinit var settingsRepository: SettingsRepository
 
-    @RelaxedMockK
     private lateinit var getRemoteReposByStarsUseCase: GetRemoteReposByStarsUseCase
 
 

@@ -14,7 +14,6 @@ import javax.inject.Inject
 class CachedRepoInvalidationUseCaseImpl @Inject constructor(
     private val reposRepository: ReposRepository,
     private val settingsRepository: SettingsRepository,
-    private val coroutineScope: CoroutineScope
 ) : CachedReposInvalidationUseCase {
 
     override suspend fun invoke(forceInvalidate: Boolean, currentTime: Long): Boolean {
@@ -28,10 +27,7 @@ class CachedRepoInvalidationUseCaseImpl @Inject constructor(
         val shouldInvalidate =
         forceInvalidate || currentTime >= (invalidationTime.toLongOrNull() ?: 0)
 
-        if (shouldInvalidate)
-            coroutineScope.launch {
-                withContext(Dispatchers.IO) { reposRepository.clearRepos() }
-            }
+        if (shouldInvalidate) withContext(Dispatchers.IO) { reposRepository.clearRepos() }
 
         return shouldInvalidate
     }
