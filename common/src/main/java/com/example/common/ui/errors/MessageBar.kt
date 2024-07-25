@@ -29,7 +29,7 @@ fun MessageBar(
     backgroundColor: Color = AppColors.Error,
     icon: Int = com.example.githubclone.R.drawable.ic_warning,
     barShape: RoundedCornerShape = RoundedCornerShape(5.dp),
-    actions: @Composable RowScope.() -> Unit = {},
+    actions: @Composable () -> Unit = {},
 ) {
     Surface(
         modifier = modifier,

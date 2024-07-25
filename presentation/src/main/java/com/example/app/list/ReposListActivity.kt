@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -28,14 +29,17 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Snackbar
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -99,7 +103,7 @@ class ReposListActivity : ComponentActivity() {
 
                 Column(Modifier.fillMaxSize()) {
 
-                    Toolbar()
+                    Toolbar(stringResource(R.string.trending))
 
                     if (viewState.value.isApiUnreachable && viewState.value.isLoading.not())
                         ConnectionError(onRetryLoading)
@@ -107,20 +111,44 @@ class ReposListActivity : ComponentActivity() {
                         ReposList(reposList.value, viewState.value)
                 }
 
-                SnackBar(
-                    viewState.value,
-                    onRetryLoading = onRetryLoading,
-                    onClearAndReload = onClearAndReload
-                )
+
+                MessageBar(viewState.value, onClearAndReload, onRetryLoading)
             }
 
         }
     }
 
     @Composable
-    private fun Toolbar() {
+    private fun MessageBar(
+        viewState:ReposListViewState,
+        onClearAndReload: () -> Unit,
+        onRetryLoading: () -> Unit
+    ) {
+        MessageBar(
+            message = viewState.snackBarMessage?.let {
+                if (it is String) it else stringResource(
+                    it as Int
+                )
+            } ?: "",
+            backgroundColor = if (viewState.hasLoadedAllData) AppColors.Green1 else AppColors.Error,
+            actions = {
+                TextButton(
+                    onClick = { if (viewState.hasLoadedAllData) onClearAndReload() else onRetryLoading() },
+                    content = {
+                        Text(
+                            text = stringResource(R.string.lis_btn_retry),
+                            style = MaterialTheme.typography.bodyMedium.copy(color = AppColors.Primary600)
+                        )
+                    },
+                )
+            }
+        )
+    }
+
+    @Composable
+    private fun Toolbar(title: String) {
         AppToolbar(
-            title = stringResource(R.string.trending),
+            title =title ,
             optionsIcon = {
                 Icon(
                     imageVector = Icons.Filled.MoreVert,
@@ -151,48 +179,6 @@ class ReposListActivity : ComponentActivity() {
                 )
             }
         )
-    }
-
-    @Composable
-    private fun SnackBar(
-        viewState: ReposListViewState,
-        onRetryLoading: () -> Unit = {},
-        onClearAndReload: () -> Unit = {}
-    ) {
-        Column(modifier = Modifier.fillMaxSize()) {
-
-            Spacer(modifier = Modifier.weight(1f))
-
-            val message = viewState.snackBarMessage
-            AnimatedVisibility(
-                visible = message != null,
-                enter = fadeIn(),
-                exit = fadeOut()
-            ) {
-
-                MessageBar(
-                    modifier = Modifier.padding(10.dp),
-                    message = message?.let { if (it is String) it else stringResource(it as Int) }
-                        ?: "",
-                    actions = {
-
-                            TextButton(
-                                onClick = { if (viewState.hasLoadedAllData) onClearAndReload()  else onRetryLoading()  },
-                                content = {
-                                    Text(
-                                        text = stringResource(R.string.lis_btn_retry),
-                                        style = MaterialTheme.typography.bodyMedium.copy(color = AppColors.Primary600)
-                                    )
-                                },
-                            )
-                    } ,
-                    backgroundColor = if (viewState.hasLoadedAllData) AppColors.Green1 else AppColors.Error,
-                )
-
-
-            }
-        }
-
     }
 
     @Composable

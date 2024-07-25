@@ -29,6 +29,7 @@ internal class NetworkResponseCall<S : Any, E : Any> @Inject constructor(
     override fun enqueue(callback: Callback<NetworkResponse<S, E>>) {
         return delegate.enqueue(object : Callback<S> {
             override fun onResponse(call: Call<S>, response: Response<S>) {
+
                 val body = response.body()
                 val code = response.code()
                 val error = response.errorBody()
